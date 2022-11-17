@@ -1,0 +1,44 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет products -->
+
+{% load bad_words_filters %}
+{% block title %}
+Новости
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все новости -->
+{% block content %}
+<h2>Все новости Борисова</h2>
+
+{% if news %}
+
+        <table>
+           <tr>
+               <td>
+                   Название
+               </td>
+               <td>
+                   Дата публикации
+               </td>
+               <td>
+                   Начало статьи
+               </td>
+           </tr>
+
+           {% for new in news %}
+           <tr>
+               <td><a href="/news/{{ new.id }}">{{ new.title|bad_words_hide }}</a></td>
+               <td>{{ new.time_in|date:'d.m.Y' }}</td>
+               <td>{{ new.text_post|truncatechars:20 }}</td>
+           </tr>
+           {% endfor %}
+       </table>
+        <h4>общее кол-во новостей: {{ news|length }}</h4>
+   {% else %}
+       <h2>Новостей нет!</h2>
+   {% endif %}
+
+
+{% endblock content %}
